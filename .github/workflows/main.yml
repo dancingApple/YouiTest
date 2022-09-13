@@ -1,0 +1,80 @@
+name: DemoWebShopPipeline
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release Version'
+        required: false
+        default: 'v'
+      ignore:
+        description: 'Exclude Scenario'
+        required: false
+        default: 'ignore'
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout new commit
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name:  Install Google Chrome # Using shell script to install Google Chrome
+        run:   |
+          chmod +x ./scripts/InstallChrome.sh
+                      ./scripts/InstallChrome.sh
+
+      - name: Run test for commit
+        if: github.event_name == 'push' || github.event_name == 'pull_request'
+        run: >
+          mvn install -f ./pom.xml
+          -Denv.USER=remote
+        continue-on-error: true
+
+      - name: Run test for workflow dispatch
+        if: github.event_name == 'workflow_dispatch'
+        run: >
+          mvn install -f ./pom.xml
+          -Denv.USER=remote
+          -Dcucumber.options="--tags ~@${{ github.event.inputs.ignore }}"
+        continue-on-error: true
+
+      - name: Update resources on master
+        uses: test-room-7/action-update-file@v1.5.0
+        with:
+          file-path: |
+            ./src/test/resources/DataTracking/*.properties
+            ./src/test/resources/UserData/*.properties
+          commit-msg: Automation triggered update resources
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+      - name: Getting reports for commit
+        if: github.event_name == 'push' || github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v2
+        with:
+          name: AutomatedCommitReports_${{ github.event.head_commit.message }}
+          path: ./target/cucumber-reports/advanced-reports
+
+      - name: Getting reports for workflow dispatch
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v2
+        with:
+          name: AutomatedTriggerReports_${{ github.event.inputs.version }}
+          path: ./target/cucumber-reports/advanced-reports
