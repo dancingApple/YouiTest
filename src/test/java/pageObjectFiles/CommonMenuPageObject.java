@@ -5,23 +5,36 @@ import org.openqa.selenium.WebDriver;
 import util.SuperClass;
 
 public class CommonMenuPageObject extends SuperClass {
-    private final By salesPage = By.xpath("(//a[@href='/account/merchant/dashboard'])[2]");
-    private final By payoutsPage = By.xpath("(//a[@href='/account/merchant/payouts'])[2]");
-    private final By reportsPage = By.xpath("(//a[@href='/account/reports/dashboard'])[2]");
-    private final By accountPage = By.xpath("(//a[@href='/account/profile'])[2]");
-    private final By logout = By.xpath("(//a[@href='/logout'])[2]");
-    private final By scalaPayLogo = By.xpath("(//img[@src='/images/scalapay-logo.svg'])[2]");
+    private final By registerLink = By.xpath("//a[text()='Register']");
+    private final By registerFormTitle = By.xpath("//h1[text()='Register']");
+    private final By topMenuBooks = By.xpath("(//div[@class='header-menu']  //a[@href='/books'])[1]");
+    private final By loginLink = By.xpath("//a[text()='Log in']");
+    private final By cartLink = By.xpath("//a[@href='/cart']/span[1]");
 
     public CommonMenuPageObject(WebDriver driver){
         this.driver = driver;
     }
 
-    public boolean verifyMenuExists() throws InterruptedException {
-        return isElementDisplayed(salesPage) &&
-                isElementDisplayed(payoutsPage) &&
-                isElementDisplayed(reportsPage) &&
-                isElementDisplayed(accountPage) &&
-                isElementDisplayed(logout) &&
-                isElementDisplayed(scalaPayLogo);
+    public void clickRegister() throws InterruptedException {
+        clickElement(registerLink);
+        shortWait(2);
+    }
+
+    public void clickLogin() throws InterruptedException {
+        clickElement(loginLink);
+        shortWait(2);
+    }
+
+    public String getRegisterTitle(){
+        return getTextFromElement(registerFormTitle);
+    }
+
+    public void selectTopMenuBooks() throws InterruptedException {
+        shortWait(2);
+        clickElement(topMenuBooks);
+    }
+
+    public void goToCart() throws InterruptedException {
+        clickElement(cartLink);
     }
 }

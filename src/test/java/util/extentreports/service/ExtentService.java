@@ -201,7 +201,7 @@ public class ExtentService
         @SuppressWarnings("deprecation")
 		private static void initHtml(Properties properties) {
             String out = getOutputPath(properties, OUT_HTML_KEY);
-            com.aventstack.extentreports.reporter.ExtentHtmlReporter html = new com.aventstack.extentreports.reporter.ExtentHtmlReporter(out);
+            ExtentHtmlReporter html = new ExtentHtmlReporter(out);
             attach(html, properties, CONFIG_HTML_KEY);
         }
         

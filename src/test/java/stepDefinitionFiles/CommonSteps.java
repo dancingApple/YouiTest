@@ -8,10 +8,12 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 
-import keywordFiles.LoginKeyword;
+import keywordFiles.LoginKeywords;
+import keywordFiles.RegisterKeyword;
 
 public class CommonSteps {
-    private LoginKeyword loginKeyword;
+    private RegisterKeyword registerKeyword;
+    private LoginKeywords loginKeywords;
     private final ProjectDataClass dataProvider;
 
     public CommonSteps(ProjectDataClass dataProvider) {
@@ -32,18 +34,22 @@ public class CommonSteps {
     }
 
     @Given("^The Environment is set as \"([^\"]*)\"$")
-    public void the_Environment_is_set_as(String testEnvironment) {
+    public void the_environment_is_set_as_something(String testEnvironment){
         dataProvider.setTestEnvironment(testEnvironment);
-    }
-
-    @Given("^(.+) user login to scalaPay test env web portal$")
-    public void user_login_to_scalapay_test_env_web_portal(String user) throws Throwable {
-        loginKeyword.loginToApplication(user);
     }
 
     @And("^The application is launched in \"([^\\\"]*)\"$")
     public void launchApplication(String browserName) {
         dataProvider.launchApplication(browserName);
-        this.loginKeyword = new LoginKeyword(dataProvider);
+        this.registerKeyword = new RegisterKeyword(dataProvider);
+        this.loginKeywords = new LoginKeywords(dataProvider);
+    }
+
+    @Given("user {string} to the demo web shop")
+    public void userToTheDemoWebShop(String link) throws Exception {
+        if(link.equalsIgnoreCase("try to register"))
+            registerKeyword.goToRegisterPage();
+        else
+            loginKeywords.loginToApplication("Siren");
     }
 }

@@ -57,6 +57,20 @@ public abstract class SuperClass {
         Thread.sleep((long) timeToWait * 1000);
     }
 
+    public ArrayList<String> getListOfItems(By element, String getAttribute) {
+        List<WebElement> temp;
+        temp = driver.findElements(element);
+        ArrayList<String> listOfItems = new ArrayList<>();
+        for (WebElement e : temp) {
+            if(getAttribute.equalsIgnoreCase("value"))
+                listOfItems.add(e.getAttribute("value"));
+            else
+                listOfItems.add(e.getText());
+
+        }
+        return listOfItems;
+    }
+
     /**
      * Method to explicitly wait for an element
      */

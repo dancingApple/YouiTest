@@ -5,13 +5,13 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import keywordFiles.RegisterKeyword;
 
-public class RegisterStep {
+public class RegisterSteps {
 
     private final RegisterKeyword registerKeyword;
 
     private final ProjectDataClass dataProvider;
 
-    public RegisterStep(ProjectDataClass dataProvider) {
+    public RegisterSteps(ProjectDataClass dataProvider) {
         this.dataProvider = dataProvider;
         this.registerKeyword = new RegisterKeyword(dataProvider);
     }

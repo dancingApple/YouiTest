@@ -14,10 +14,10 @@
         <protocol>https</protocol>
 
         <!-- title of the document -->
-        <documentTitle>Scala Pay Test Result</documentTitle>
+        <documentTitle>Demo Web Shop Test Result</documentTitle>
 
         <!-- report name - displayed at top-nav -->
-        <reportName>Scala Pay Automation Report</reportName>
+        <reportName>Demo Web Shop Automation Report</reportName>
 
         <!-- location of charts in the test view -->
         <!-- top, bottom -->

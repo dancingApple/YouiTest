@@ -18,15 +18,40 @@ import java.io.File;
 public class ProjectDataClass {
 
     private ProjectDataClass dataInstance = null;
-    private String username = "";
-    private String password = "";
-    private String user = "";
 
     private WebDriver driver;
     private final DriverFactory driverFactory = new DriverFactory();
     private String platform = System.getProperty("env.USER");
     private String url;
     private Scenario scenarioName;
+
+    public String getLoginEmail() {
+        return loginEmail;
+    }
+
+    public void setLoginEmail(String loginEmail) {
+        this.loginEmail = loginEmail;
+    }
+
+    public String getLoginPw() {
+        return loginPw;
+    }
+
+    public void setLoginPw(String loginPw) {
+        this.loginPw = loginPw;
+    }
+
+    public String getLoginUser() {
+        return loginUser;
+    }
+
+    public void setLoginUser(String loginUser) {
+        this.loginUser = loginUser;
+    }
+
+    private String loginEmail;
+    private String loginPw;
+    private String loginUser;
 
     /**
      * This Method is to get the feature name under tested.
@@ -45,15 +70,15 @@ public class ProjectDataClass {
      */
     public void setTestEnvironment(String testRegion) {
         switch (testRegion.toUpperCase()) {
-            case "SCALAPAYTESTENV":
-                url ="https://staging.partner.scalapay.com/login";
+            case "DEMOWEBSHOP":
+                url ="https://demowebshop.tricentis.com/";
                 System.out.println("*** ScalaPay test env is being used ***");
                 break;
             case "OTHERENV":
                 url ="https://otherEnv.com/";
                 break;
             default:
-                url ="https://staging.partner.scalapay.com/login";
+                url ="https://demowebshop.tricentis.com/";
                 System.out.println("*** Default to use ScalaPay test env ***");
                 break;
         }
@@ -123,11 +148,5 @@ public class ProjectDataClass {
 
     public void setScenarioName(Scenario scenarioName) { this.scenarioName = scenarioName; }
     public Scenario getScenarioName() { return scenarioName; }
-    public void setUsername(String username) { this.username = username; }
-    public String getUsername() { return username; }
-    public void setPassword(String password) { this.password = password; }
-    public String getPassword() { return password; }
-    public void setUser(String user) { this.user = user; }
 
-    public String getUser() {return user;}
 }
